@@ -1,1 +1,42 @@
+@import "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css";
 
+/* Custom Scrollbar for Dark Theme */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0b0f19;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1f2937;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #374151;
+}
+
+/* Smooth Scrolling & Selection */
+html {
+    scroll-behavior: smooth;
+}
+
+::selection {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+/* Glassmorphism & Glow Effects */
+.glass-card {
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glow-blue {
+    box-shadow: 0 0 25px -5px rgba(37, 99, 235, 0.3);
+}
