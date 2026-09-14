@@ -67,14 +67,14 @@ function switchTab(tabName) {
 async function loadDashboardData() {
     try {
         // Fetch Projects
-        const pRes = await fetch('http://localhost:5000/api/projects');
+        const pRes = await fetch('https://deepak-portfolio-3pkq.onrender.com/api/projects');
         const pData = await pRes.json();
         if (pData.success) {
             document.getElementById('stat-projects-count').textContent = pData.projects.length;
         }
 
         // Fetch Messages
-        const mRes = await fetch('http://localhost:5000/api/messages');
+        const mRes = await fetch('https://deepak-portfolio-3pkq.onrender.com/api/messages');
         const mData = await mRes.json();
         if (mData.success) {
             document.getElementById('stat-messages-count').textContent = mData.messages.length;
@@ -88,7 +88,7 @@ async function loadDashboardData() {
 // Load Projects for Management List
 async function loadAdminProjects() {
     try {
-        const res = await fetch('http://localhost:5000/api/projects');
+        const res = await fetch('https://deepak-portfolio-3pkq.onrender.com/api/projects');
         const data = await res.json();
         const listContainer = document.getElementById('admin-projects-list');
         listContainer.innerHTML = '';
@@ -117,7 +117,7 @@ async function loadAdminProjects() {
 async function deleteProject(id) {
     if (!confirm('Are you sure you want to delete this project?')) return;
     try {
-        const res = await fetch(`http://localhost:5000/api/projects/${id}`, { method: 'DELETE' });
+        const res = await fetch(`https://deepak-portfolio-3pkq.onrender.com/api/projects/${id}`, { method: 'DELETE' });
         const data = await res.json();
         alert(data.message);
         loadAdminProjects();
@@ -130,7 +130,7 @@ async function deleteProject(id) {
 // Load Messages List
 async function loadAdminMessages() {
     try {
-        const res = await fetch('http://localhost:5000/api/messages');
+        const res = await fetch('https://deepak-portfolio-3pkq.onrender.com/api/messages');
         const data = await res.json();
         const listContainer = document.getElementById('admin-messages-list');
         listContainer.innerHTML = '';
@@ -158,7 +158,7 @@ async function loadAdminMessages() {
 // Delete Message Handler
 async function deleteMessage(id) {
     try {
-        const res = await fetch(`http://localhost:5000/api/messages/${id}`, { method: 'DELETE' });
+        const res = await fetch(`https://deepak-portfolio-3pkq.onrender.com/api/messages/${id}`, { method: 'DELETE' });
         const data = await res.json();
         alert(data.message);
         loadAdminMessages();
