@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const githubLink = document.getElementById('p-github').value;
 
             try {
-                const res = await fetch('http://localhost:5000/api/projects/add', {
+                const res = await fetch('https://deepak-portfolio-3pkq.onrender.com/api/projects/add', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ title, category, description, liveLink, githubLink })
