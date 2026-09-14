@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Fetch Projects from Backend for Portfolio View
 async function fetchFrontendProjects() {
     try {
-        const res = await fetch('http://localhost:5000/api/projects');
+        const res = await fetch('https://deepak-portfolio-3pkq.onrender.com/api/projects');
         const data = await res.json();
         const grid = document.getElementById('frontend-projects-grid');
         grid.innerHTML = '';
