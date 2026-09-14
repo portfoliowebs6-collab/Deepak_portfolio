@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEWA | View Message</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-[#05050a] text-white font-['Inter'] min-h-screen flex items-center justify-center p-4 selection:bg-purple-500 selection:text-white">
+
+    <div class="w-full max-w-2xl bg-[#0c0c16] border border-white/10 rounded-3xl p-6 lg:p-8 shadow-2xl relative">
+        <!-- Back Button -->
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-white/5">
+            <a href="admin.html" class="bg-white/5 hover:bg-white/10 text-slate-300 px-4 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+            <span class="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full font-medium">Message Detail</span>
+        </div>
+
+        <!-- Message Details Box -->
+        <div class="space-y-6" id="msg-detail-container">
+            <div class="flex flex-col sm:flex-row justify-between gap-4 bg-[#131322] border border-white/5 p-4 rounded-2xl">
+                <div>
+                    <span class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Sender Name</span>
+                    <h3 id="view-name" class="font-bold text-sm text-white">Loading...</h3>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Email Address</span>
+                    <a id="view-email" href="#" class="text-xs text-indigo-400 hover:underline">Loading...</a>
+                </div>
+            </div>
+
+            <div class="bg-[#131322] border border-white/5 p-5 rounded-2xl">
+                <span class="text-[10px] text-slate-400 uppercase tracking-wider block mb-2">Full Message Content</span>
+                <p id="view-text" class="text-slate-300 text-xs leading-relaxed whitespace-pre-wrap">Please wait while we load the message...</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-3 pt-2">
+                <a id="reply-btn" href="#" class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-500 text-white text-center py-3 rounded-xl text-xs font-semibold shadow-lg transition hover:opacity-90 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane text-[10px]"></i> Reply via Email
+                </a>
+                <button onclick="deleteMessage()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 px-5 py-3 rounded-xl text-xs font-semibold transition">
+                    Delete Message
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL se message ID nikalna
+        const urlParams = new URLSearchParams(window.location.search);
+        const msgId = urlParams.get('id');
+
+        // Localhost ya Render API link auto-detect
+        const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+            ? 'http://localhost:5000/api/messages' 
+            : 'https://deepak-portfolio-3pkq.onrender.com/api/messages';
+
+        async function fetchMessageDetail() {
+            if (!msgId) {
+                document.getElementById('msg-detail-container').innerHTML = `<p class="text-rose-400 text-xs text-center">Invalid Message ID provided.</p>`;
+                return;
+            }
+
+            try {
+                const res = await fetch(`${apiUrl}/${msgId}`);
+                const data = await res.json();
+
+                if (data.success && data.message) {
+                    const msg = data.message;
+                    document.getElementById('view-name').innerText = msg.name;
+                    
+                    const emailEl = document.getElementById('view-email');
+                    emailEl.innerText = msg.email;
+                    emailEl.href = `mailto:${msg.email}`;
+
+                    document.getElementById('view-text').innerText = msg.message;
+                    document.getElementById('reply-btn').href = `mailto:${msg.email}?subject=Regarding your message on Portfolio`;
+                } else {
+                    document.getElementById('msg-detail-container').innerHTML = `<p class="text-rose-400 text-xs text-center">Message not found or deleted.</p>`;
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('msg-detail-container').innerHTML = `<p class="text-rose-400 text-xs text-center">Failed to load message from server.</p>`;
+            }
+        }
+
+        async function deleteMessage() {
+            if (!confirm('Are you sure you want to delete this message?')) return;
+            try {
+                const res = await fetch(`${apiUrl}/${msgId}`, { method: 'DELETE' });
+                const data = await res.json();
+                alert(data.message || 'Message deleted');
+                window.location.href = 'admin.html';
+            } catch (err) {
+                console.error(err);
+                alert('Failed to delete message.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchMessageDetail);
+    </script>
+</body>
+</html>

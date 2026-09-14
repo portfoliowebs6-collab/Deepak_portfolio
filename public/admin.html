@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEWA | Admin Dashboard & Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN for Live Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#05050a] text-white font-['Inter'] min-h-screen selection:bg-purple-500 selection:text-white">
+
+    <!-- Top Admin Header -->
+    <header class="flex justify-between items-center px-6 lg:px-8 py-4 border-b border-white/5 sticky top-0 bg-[#05050a]/80 backdrop-blur-xl z-40">
+        <div class="flex items-center space-x-3">
+            <div class="bg-gradient-to-tr from-indigo-600 to-purple-500 p-2 rounded-xl text-white shadow-lg shadow-indigo-500/20">
+                <i class="fa-solid fa-code text-sm"></i>
+            </div>
+            <div>
+                <span class="font-bold text-sm tracking-widest block">KEWA ADMIN</span>
+                <span class="text-[9px] text-slate-400 tracking-wider uppercase block">MANAGEMENT & ANALYTICS</span>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+            <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-full flex items-center gap-1.5 font-medium">
+                <i class="fa-solid fa-circle text-[8px] animate-pulse"></i> Live Sync Active
+            </span>
+            <a href="index.html" class="border border-white/15 hover:border-indigo-500 hover:bg-white/5 px-4 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-300">
+                <i class="fa-solid fa-arrow-left"></i> View Site
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Wrapper Grid -->
+    <div class="max-w-[1600px] mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6 items-start">
+        
+        <!-- Left Sidebar Navigation -->
+        <aside class="bg-[#0c0c16]/85 backdrop-blur-md border border-white/5 rounded-3xl p-4 flex flex-col justify-between sticky top-24 shadow-xl">
+            <ul class="space-y-1.5">
+                <li>
+                    <a href="#dashboard" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl bg-gradient-to-r from-indigo-600/20 to-purple-600/20 text-white border border-indigo-500/30 text-xs font-medium shadow-sm">
+                        <i class="fa-solid fa-chart-pie text-indigo-400 text-sm w-4"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#projects-manage" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-slate-400 hover:bg-white/5 hover:text-white text-xs font-medium transition">
+                        <i class="fa-solid fa-layer-group text-slate-500 text-sm w-4"></i> Manage Projects
+                    </a>
+                </li>
+                <li>
+                    <a href="#messages-manage" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-slate-400 hover:bg-white/5 hover:text-white text-xs font-medium transition">
+                        <i class="fa-solid fa-envelope text-slate-500 text-sm w-4"></i> Messages 
+                        <span id="msg-badge" class="ml-auto bg-purple-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+                    </a>
+                </li>
+                <li>
+                    <button onclick="handleLogout()" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-rose-400 hover:bg-rose-500/10 text-xs font-medium transition text-left mt-4 border border-transparent hover:border-rose-500/20">
+                        <i class="fa-solid fa-right-from-bracket text-sm w-4"></i> Logout
+                    </button>
+                </li>
+            </ul>
+
+            <div class="bg-gradient-to-br from-indigo-950/40 to-purple-950/20 border border-indigo-500/20 rounded-2xl p-4 text-center mt-6">
+                <i class="fa-solid fa-shield-halved text-indigo-400 text-lg mb-1"></i>
+                <p class="text-[11px] text-slate-300 font-medium">Secure Node Backend</p>
+            </div>
+        </aside>
+
+        <!-- Right Content Area -->
+        <main id="dashboard" class="space-y-6">
+            
+            <!-- Top Stats & Live Chart Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Stats Column -->
+                <div class="space-y-4 flex flex-col justify-between">
+                    <div class="bg-[#0c0c16]/85 backdrop-blur-md border border-white/5 rounded-3xl p-5 shadow-xl">
+                        <span class="text-slate-400 text-[11px] uppercase tracking-wider font-semibold block mb-1">Total Projects</span>
+                        <h3 id="stat-total-projects" class="text-2xl font-bold text-white">0</h3>
+                    </div>
+                    <div class="bg-[#0c0c16]/85 backdrop-blur-md border border-white/5 rounded-3xl p-5 shadow-xl">
+                        <span class="text-slate-400 text-[11px] uppercase tracking-wider font-semibold block mb-1">Total Messages</span>
+                        <h3 id="stat-total-msgs" class="text-2xl font-bold text-white">0</h3>
+                    </div>
+                    <div class="bg-[#0c0c16]/85 backdrop-blur-md border border-white/5 rounded-3xl p-5 shadow-xl">
+                        <span class="text-slate-400 text-[11px] uppercase tracking-wider font-semibold block mb-1">System Status</span>
+                        <h3 class="text-2xl font-bold text-emerald-400">99.9%</h3>
+                    </div>
+                </div>
+
+                <!-- Live Chart Analytics Column (Fluctuating Live Visitors) -->
+                <div class="lg:col-span-2 bg-[#0c0c16]/85 backdrop-blur-md border border-white/5 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h3 class="text-sm font-bold tracking-tight">Live Activity Analytics</h3>
+                            <p class="text-[11px] text-slate-400">Real-time portfolio visitors fluctuation</p>
+                        </div>
+                        <span class="text-[10px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-1 rounded-full font-medium">Live Active</span>
+                    </div>
+                    <div class="h-56 relative w-full">
+                        <canvas id="liveActivityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add New Project Section -->
+            <div id="projects-manage" class="bg-[#0c0c16]/85 backdrop-blur-md border border-white/5 rounded-3xl p-6 lg:p-8 shadow-xl">
+                <div class="mb-6 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-bold tracking-tight">Add New Project</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Publish a project with custom image banner to sync live</p>
+                    </div>
+                    <div class="w-9 h-9 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center">
+                        <i class="fa-solid fa-plus text-sm"></i>
+                    </div>
+                </div>
+
+                <form id="add-project-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1.5 font-medium">Project Title</label>
+                            <input type="text" id="p-title" required class="w-full bg-[#131322] border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white transition" placeholder="e.g. Kewa AI Assistant">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1.5 font-medium">Category</label>
+                            <input type="text" id="p-category" required class="w-full bg-[#131322] border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white transition" placeholder="e.g. Fullstack Platform">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">Description</label>
+                        <textarea id="p-desc" required rows="3" class="w-full bg-[#131322] border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white transition" placeholder="Detailed project features and architecture..."></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1.5 font-medium">Live Demo URL</label>
+                            <input type="url" id="p-link" class="w-full bg-[#131322] border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white transition" placeholder="https://...">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1.5 font-medium">Image URL (Banner)</label>
+                            <input type="url" id="p-img" class="w-full bg-[#131322] border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white transition" placeholder="https://images.unsplash.com/photo-...">
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-gradient-to-r from-indigo-600 to-purple-500 hover:opacity-90 px-6 py-3 rounded-xl text-xs font-semibold shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Publish Project
+                    </button>
+                </form>
+            </div>
+
+            <!-- Existing Projects List -->
+            <div class="bg-[#0c0c16]/85 backdrop-blur-md border border-white/5 rounded-3xl p-6 lg:p-8 shadow-xl">
+                <h2 class="text-lg font-bold tracking-tight mb-4">Existing Projects (Edit / Delete)</h2>
+                <div id="admin-projects-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <p class="text-xs text-slate-400">Loading projects...</p>
+                </div>
+            </div>
+
+            <!-- Client Messages Inbox Section -->
+            <div id="messages-manage" class="bg-[#0c0c16]/85 backdrop-blur-md border border-white/5 rounded-3xl p-6 lg:p-8 shadow-xl">
+                <div class="mb-6">
+                    <h2 class="text-lg font-bold tracking-tight">Client Messages Inbox</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Direct inquiries sent from your portfolio contact form</p>
+                </div>
+
+                <div id="admin-messages-list" class="space-y-3">
+                    <div class="bg-[#131322] border border-white/5 p-4 rounded-2xl text-center text-slate-400 text-xs">
+                        No messages received yet.
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Edit Project Modal Form -->
+    <div id="editProjectModal" class="fixed inset-0 bg-black/85 backdrop-blur-md flex justify-center items-center z-50 opacity-0 pointer-events-none transition-all duration-300 p-4">
+        <div class="bg-[#0c0c18] border border-indigo-500/30 rounded-3xl w-full max-w-xl p-6 relative transform scale-95 transition-all duration-300 shadow-2xl" id="editModalBox">
+            <button onclick="closeEditModal()" class="absolute top-5 right-5 bg-white/10 hover:bg-white/20 text-white w-8 h-8 rounded-full flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+            <h3 class="text-lg font-bold mb-4">Edit Project</h3>
+            
+            <form id="edit-project-form" class="space-y-4">
+                <input type="hidden" id="edit-p-id">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">Project Title</label>
+                        <input type="text" id="edit-p-title" required class="w-full bg-[#131322] border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">Category</label>
+                        <input type="text" id="edit-p-category" required class="w-full bg-[#131322] border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1.5 font-medium">Description</label>
+                    <textarea id="edit-p-desc" required rows="3" class="w-full bg-[#131322] border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white transition"></textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">Live Demo URL</label>
+                        <input type="url" id="edit-p-link" class="w-full bg-[#131322] border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">Image URL</label>
+                        <input type="url" id="edit-p-img" class="w-full bg-[#131322] border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white transition">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-500 hover:opacity-90 py-3 rounded-xl text-xs font-semibold shadow-lg transition">
+                    Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 border-t border-white/5 text-xs text-slate-500 max-w-[1600px] mx-auto">
+        © 2026 Deepak Kewat. All rights reserved.
+    </footer>
+
+    <!-- Chart & Dashboard Script Helpers with Live Fluctuations -->
+    <script>
+        let activityChart;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const ctx = document.getElementById('liveActivityChart').getContext('2d');
+            
+            activityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', 'Live Now'],
+                    datasets: [{
+                        label: 'Live Visitors',
+                        data: [15, 22, 18, 35, 40, 52, 45],
+                        borderColor: '#818cf8',
+                        backgroundColor: 'rgba(129, 140, 248, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+                        y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // Live Simulation: Har 4 seconds me graph ka last point live visitor count ke hisab se upar-niche hoga
+            setInterval(() => {
+                if (!activityChart) return;
+                const dataArr = activityChart.data.datasets[0].data;
+                
+                const lastVal = dataArr[dataArr.length - 1];
+                const fluctuation = Math.floor(Math.random() * 12) - 5; 
+                let newVal = lastVal + fluctuation;
+                
+                if (newVal < 10) newVal = 12;
+                if (newVal > 80) newVal = 75;
+
+                dataArr[dataArr.length - 1] = newVal;
+                activityChart.update('none');
+            }, 4000);
+        });
+
+        function handleLogout() {
+            localStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'login.html';
+        }
+
+        function closeEditModal() {
+            const m = document.getElementById('editProjectModal');
+            const box = document.getElementById('editModalBox');
+            m.classList.add('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+        }
+    </script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
