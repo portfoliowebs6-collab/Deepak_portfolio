@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = document.getElementById('c-msg').value;
 
             try {
-                const res = await fetch('http://localhost:5000/api/messages/send', {
+                const res = await fetch('https://deepak-portfolio-3pkq.onrender.com/api/messages/send', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, message })
