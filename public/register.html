@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepak Kewat | Admin Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#0b0f19] text-white font-sans flex items-center justify-center h-screen">
+
+    <div class="w-full max-w-md bg-[#111827] border border-gray-800 p-8 rounded-3xl shadow-2xl">
+        <div class="text-center mb-8">
+            <span class="text-blue-500 font-bold text-3xl">&lt;/&gt;</span>
+            <h1 class="text-2xl font-extrabold mt-2">Create Account</h1>
+            <p class="text-xs text-gray-400 mt-1">Register new admin credentials</p>
+        </div>
+
+        <form id="register-form" class="space-y-4">
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">Admin Email</label>
+                <input type="email" id="email" required class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl px-4 py-3 text-sm focus:border-blue-500 outline-none text-white" placeholder="kewatsoftwere@gmail.com">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">Password</label>
+                <input type="password" id="password" required class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl px-4 py-3 text-sm focus:border-blue-500 outline-none text-white" placeholder="••••••••">
+            </div>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-xl transition text-sm">Register</button>
+        </form>
+
+        <p class="text-xs text-center text-gray-400 mt-6">
+            Already have an account? <a href="login.html" class="text-blue-400 hover:underline">Login here</a>
+        </p>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

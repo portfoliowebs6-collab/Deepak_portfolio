@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepak Kewat | Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#0b0f19] text-white font-sans flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-[#111827] border-r border-gray-800 flex flex-col justify-between hidden md:flex">
+        <div>
+            <div class="flex items-center space-x-2 px-6 py-5 border-b border-gray-800">
+                <span class="text-blue-500 font-bold text-xl">&lt;/&gt;</span>
+                <div>
+                    <h1 class="font-bold text-sm">Deepak Kewat</h1>
+                    <p class="text-xs text-gray-400">Admin Panel</p>
+                </div>
+            </div>
+
+            <nav class="p-4 space-y-1 text-sm">
+                <button onclick="switchTab('dashboard')" class="w-full flex items-center space-x-3 px-4 py-2.5 bg-blue-600 text-white rounded-xl font-medium">
+                    <span>📊</span><span>Dashboard</span>
+                </button>
+                <button onclick="switchTab('projects')" class="w-full flex items-center space-x-3 px-4 py-2.5 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl text-left">
+                    <span>📁</span><span>Projects</span>
+                </button>
+                <button onclick="switchTab('messages')" class="w-full flex items-center space-x-3 px-4 py-2.5 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl text-left justify-between">
+                    <div class="flex items-center space-x-3"><span>✉️</span><span>Messages</span></div>
+                    <span id="msg-badge" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+                </button>
+                <button onclick="logoutAdmin()" class="w-full flex items-center space-x-3 px-4 py-2.5 text-red-400 hover:bg-red-500/10 rounded-xl text-left mt-10">
+                    <span>🚪</span><span>Logout</span>
+                </button>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-gray-800 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center font-bold text-sm">DK</div>
+                <div>
+                    <h2 id="admin-user-email" class="text-xs font-bold truncate w-36">Admin</h2>
+                    <p class="text-[10px] text-green-400">● Online</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+        <header class="flex justify-between items-center px-8 py-4 border-b border-gray-800 bg-[#0b0f19] sticky top-0 z-10">
+            <div>
+                <h2 id="page-title" class="text-xl font-bold">Admin Dashboard</h2>
+                <p class="text-xs text-gray-400">Manage your website content, projects and messages from here.</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="bg-gray-800 text-xs px-3 py-1.5 rounded-lg text-gray-300">📅 Live Sync Active</span>
+            </div>
+        </header>
+
+        <div class="p-8 space-y-6">
+            
+            <!-- TAB 1: DASHBOARD OVERVIEW -->
+            <div id="tab-dashboard" class="space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-[#111827] border border-gray-800 p-5 rounded-2xl">
+                        <p class="text-xs text-gray-400">Total Projects</p>
+                        <h3 id="stat-projects-count" class="text-3xl font-extrabold mt-1">0</h3>
+                    </div>
+                    <div class="bg-[#111827] border border-gray-800 p-5 rounded-2xl">
+                        <p class="text-xs text-gray-400">Total Messages</p>
+                        <h3 id="stat-messages-count" class="text-3xl font-extrabold mt-1">0</h3>
+                    </div>
+                    <div class="bg-[#111827] border border-gray-800 p-5 rounded-2xl">
+                        <p class="text-xs text-gray-400">System Status</p>
+                        <h3 class="text-3xl font-extrabold mt-1 text-green-400">99.9%</h3>
+                    </div>
+                </div>
+
+                <!-- Quick Actions / Add Project Form Container -->
+                <div class="bg-[#111827] border border-gray-800 p-6 rounded-2xl">
+                    <h3 class="text-base font-bold mb-4">➕ Add New Project</h3>
+                    <form id="add-project-form" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Project Title</label>
+                                <input type="text" id="p-title" required class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-500" placeholder="Kewa AI">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Category</label>
+                                <input type="text" id="p-category" required class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-500" placeholder="AI Chat & Assistant Platform">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Description</label>
+                            <textarea id="p-desc" required rows="2" class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-500" placeholder="Short description..."></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Live Link</label>
+                                <input type="text" id="p-live" class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-500" placeholder="https://...">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">GitHub Link</label>
+                                <input type="text" id="p-github" class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-500" placeholder="https://github.com/...">
+                            </div>
+                        </div>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-2.5 rounded-xl text-sm font-medium transition">Publish Project</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 2: PROJECTS LIST -->
+            <div id="tab-projects" class="space-y-4 hidden">
+                <h3 class="text-lg font-bold">Manage Projects</h3>
+                <div id="admin-projects-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic project cards with delete option -->
+                </div>
+            </div>
+
+            <!-- TAB 3: MESSAGES -->
+            <div id="tab-messages" class="space-y-4 hidden">
+                <h3 class="text-lg font-bold">Client Messages</h3>
+                <div id="admin-messages-list" class="space-y-3">
+                    <!-- Dynamic incoming messages -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
